@@ -1,0 +1,10 @@
+$('.chats').append(`
+    <div class="chat-fukidashi" style='text-align: right;'>
+      <strong><%= j @message.content %></strong><br>
+      ${'<%= created_at %>'}
+    </div>
+`)
+$('input[type=text]').val("")
+
+<!--Messagesコントローラの createアクションが実行された後の表示部分です。-->
+<!--Rooms/showページの chatsというクラス名の部分について記載しています。-->

@@ -7,7 +7,12 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
+    to = Time.current.at_end_of_day
+    #現在の日時を基準にして期間の終了日を設定します。
+    from = (to - 6.day).at_beginning_of_day
+    #終了日から6日前の日時を開始日として設定します。これにより、1週間の期間が設定されます。
+    @books = Book.includes(:favorites).sort_by { |book| -book.favorites.where(created_at: from...to).count }
+    # N+1問題を解決するために Book モデルに関連するいいね情報を一括で取得するために使用します。
     @book = Book.new
   end
 

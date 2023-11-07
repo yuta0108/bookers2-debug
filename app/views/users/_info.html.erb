@@ -32,4 +32,19 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <% if @user != current_user %>  <!--@userと現在ログインしているユーザーが異なるユーザーの時-->
+    <% if (current_user.following?(@user)) && (@user.following?(current_user)) %>  <!--@userと現在ログインしているユーザーが相互フォローの関係の時-->
+      <% if @isRoom == true %>
+        <%= link_to "チャットへ",  room_path(@roomId), class: "btn btn-primary" %>  <!--@isRoomが trueなら（現在ログインしているユーザーと@userが共通のRoomをすでに持っていたら）-->
+      <% else %>
+        <%= form_for @room do |f| %>
+          <%= fields_for @entry do |e| %>
+            <%= e.hidden_field:user_id, value: @user.id %>  <!--user_idが @user.idの roomとentryを作成します。-->
+          <% end %>
+          <%= f.submit "チャットを始める", class: "btn btn-primary user-show-chat" %>  <!--@user.idが Roomsコントローラの createメソッドに渡されます。-->
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>
