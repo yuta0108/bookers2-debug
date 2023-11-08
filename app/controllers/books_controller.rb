@@ -2,6 +2,9 @@ class BooksController < ApplicationController
   before_action :ensure_correct_user, only: [:update, :edit]
   def show
     @book = Book.find(params[:id])
+    unless ReadCount.find_by(user_id: current_user.id, book_id: @book.id)  #Book.findで取得したbook_idとユーザーのidが一致するものが無いかを探す。あとは上と一緒
+      current_user.read_counts.create(book_id: @book.id)
+    end
     @booknew = Book.new
     @book_comment = BookComment.new
   end
